@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { cancelBooking, getBooking } from '../lib/api'
-import { CABIN_LABELS, PASSENGER_TYPE_LABELS, formatCurrency, formatDate, formatTime } from '../lib/format'
+import { CABIN_LABELS, MEAL_LABELS, PASSENGER_TYPE_LABELS, formatCurrency, formatDate, formatTime } from '../lib/format'
 
 export default function BookingReceiptPage() {
   const { id } = useParams()
@@ -41,14 +41,15 @@ export default function BookingReceiptPage() {
   return (
     <div className="page page-narrow">
       {location.state?.justBooked && (
-        <div className="success-banner">Your booking is confirmed! A summary has been sent to {booking.contactEmail}.</div>
+        <div className="success-banner no-print">Your booking is confirmed! A summary has been sent to {booking.contactEmail}.</div>
       )}
-      {error && <div className="error-banner">{error}</div>}
+      {error && <div className="error-banner no-print">{error}</div>}
 
-      <div className="card">
+      <div className="card printable-ticket">
+        <span className="eyebrow">E-Ticket &amp; Booking Receipt</span>
         <div className="receipt-header">
           <div>
-            <div className="pnr-label">Booking reference</div>
+            <div className="pnr-label">Booking reference (PNR)</div>
             <div className="pnr-code">{booking.pnr}</div>
           </div>
           <span className={`badge ${booking.status === 'CONFIRMED' ? 'badge-confirmed' : 'badge-cancelled'}`}>
@@ -64,7 +65,12 @@ export default function BookingReceiptPage() {
           <ul className="receipt-passenger-list">
             {booking.passengers.map((p) => (
               <li key={p.id}>
-                <span>{p.fullName} <span style={{ color: 'var(--charcoal)' }}>({PASSENGER_TYPE_LABELS[p.passengerType]})</span></span>
+                <span>
+                  {p.fullName} <span style={{ color: 'var(--charcoal)' }}>({PASSENGER_TYPE_LABELS[p.passengerType]})</span>
+                  {p.mealPreference && p.mealPreference !== 'NONE' && (
+                    <span style={{ color: 'var(--charcoal)' }}> &middot; {MEAL_LABELS[p.mealPreference]} meal</span>
+                  )}
+                </span>
                 <span>Seat {p.seatNumber}</span>
               </li>
             ))}
@@ -82,8 +88,13 @@ export default function BookingReceiptPage() {
         </div>
       </div>
 
-      <div style={{ marginTop: 20, display: 'flex', gap: 12, justifyContent: 'space-between' }}>
-        <Link to="/bookings" className="btn btn-outline">Back to my trips</Link>
+      <div className="no-print" style={{ marginTop: 20, display: 'flex', gap: 12, justifyContent: 'space-between', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 12 }}>
+          <Link to="/bookings" className="btn btn-outline">Back to my trips</Link>
+          <button type="button" className="btn btn-gold" onClick={() => window.print()}>
+            Download E-Ticket (PDF)
+          </button>
+        </div>
         {booking.status === 'CONFIRMED' && (
           confirmingCancel ? (
             <div style={{ display: 'flex', gap: 8 }}>

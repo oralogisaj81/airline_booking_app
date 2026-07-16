@@ -108,7 +108,7 @@ public class BookingController {
         for (PassengerRequest p : request.passengers()) {
             booking.addPassenger(new Passenger(UUID.randomUUID().toString(), p.fullName().trim(),
                     p.passportNumber().trim().toUpperCase(), p.dateOfBirth(), p.passengerType(),
-                    assignSeat(cabinClass, seatIndex++)));
+                    assignSeat(cabinClass, seatIndex++), p.mealPreference()));
         }
 
         bookingRepository.saveAndFlush(booking);

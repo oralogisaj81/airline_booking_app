@@ -846,3 +846,30 @@ img { max-width: 100%; display: block; }
   .flight-fare { align-items: flex-start; }
   h1 { font-size: 2.2rem; }
 }
+
+/* ---------- print / downloadable e-ticket ---------- */
+
+@media print {
+  .navbar, .footer, .no-print {
+    display: none !important;
+  }
+
+  body, #root, .page {
+    background: var(--white) !important;
+  }
+
+  .page {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .printable-ticket {
+    box-shadow: none;
+    border: 1px solid var(--line);
+  }
+
+  .receipt-leg, .flight-card {
+    break-inside: avoid;
+  }
+}

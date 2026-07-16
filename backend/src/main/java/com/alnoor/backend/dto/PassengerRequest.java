@@ -1,5 +1,6 @@
 package com.alnoor.backend.dto;
 
+import com.alnoor.backend.model.MealPreference;
 import com.alnoor.backend.model.PassengerType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ public record PassengerRequest(
         @NotBlank String fullName,
         @NotBlank String passportNumber,
         @NotNull @Past LocalDate dateOfBirth,
-        @NotNull PassengerType passengerType
+        @NotNull PassengerType passengerType,
+        @NotNull MealPreference mealPreference
 ) {
 }

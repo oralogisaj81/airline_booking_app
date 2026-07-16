@@ -43,3 +43,13 @@ export const PASSENGER_TYPE_LABELS = {
   CHILD: 'Child (2-11)',
   INFANT: 'Infant (under 2)',
 }
+
+export const MEAL_LABELS = {
+  NONE: 'No preference',
+  VEGETARIAN: 'Vegetarian',
+  VEGAN: 'Vegan',
+  HALAL: 'Halal',
+  KOSHER: 'Kosher',
+  GLUTEN_FREE: 'Gluten-free',
+  DIABETIC: 'Diabetic',
+}

@@ -41,17 +41,26 @@ public class Passenger {
     @Column
     private String seatNumber;
 
+    // Nullable (not NOT NULL) even though every new booking always sets it --
+    // this column was added after the app already had live bookings, and
+    // Postgres rejects ADD COLUMN ... NOT NULL on a non-empty table without a
+    // default. See the ddl-auto=update migration-safety note in the skill.
+    @Enumerated(EnumType.STRING)
+    @Column
+    private MealPreference mealPreference;
+
     protected Passenger() {
     }
 
     public Passenger(String id, String fullName, String passportNumber, LocalDate dateOfBirth,
-                      PassengerType passengerType, String seatNumber) {
+                      PassengerType passengerType, String seatNumber, MealPreference mealPreference) {
         this.id = id;
         this.fullName = fullName;
         this.passportNumber = passportNumber;
         this.dateOfBirth = dateOfBirth;
         this.passengerType = passengerType;
         this.seatNumber = seatNumber;
+        this.mealPreference = mealPreference;
     }
 
     public void setBooking(Booking booking) {
@@ -84,5 +93,9 @@ public class Passenger {
 
     public String getSeatNumber() {
         return seatNumber;
+    }
+
+    public MealPreference getMealPreference() {
+        return mealPreference;
     }
 }

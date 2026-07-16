@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useSession } from '../lib/auth-client'
 import { createBooking, getFlight } from '../lib/api'
-import { CABIN_LABELS, PASSENGER_TYPE_LABELS, formatCurrency, formatDate, formatTime } from '../lib/format'
+import { CABIN_LABELS, MEAL_LABELS, PASSENGER_TYPE_LABELS, formatCurrency, formatDate, formatTime } from '../lib/format'
 
-const EMPTY_PASSENGER = { fullName: '', passportNumber: '', dateOfBirth: '', passengerType: 'ADULT' }
+const EMPTY_PASSENGER = { fullName: '', passportNumber: '', dateOfBirth: '', passengerType: 'ADULT', mealPreference: 'NONE' }
 
 export default function CheckoutPage() {
   const location = useLocation()
@@ -156,6 +156,17 @@ export default function CheckoutPage() {
                         onChange={(e) => updatePassenger(index, 'passengerType', e.target.value)}
                       >
                         {Object.entries(PASSENGER_TYPE_LABELS).map(([value, label]) => (
+                          <option key={value} value={value}>{label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="field">
+                      <label>Special meal request</label>
+                      <select
+                        value={passenger.mealPreference}
+                        onChange={(e) => updatePassenger(index, 'mealPreference', e.target.value)}
+                      >
+                        {Object.entries(MEAL_LABELS).map(([value, label]) => (
                           <option key={value} value={value}>{label}</option>
                         ))}
                       </select>
